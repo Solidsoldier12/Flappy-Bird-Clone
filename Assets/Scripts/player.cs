@@ -1,6 +1,8 @@
 using UnityEngine;
 public class player : MonoBehaviour
 {
+    [SerializeField]
+    GameObject gameManager;
     private SpriteRenderer spriteRenderer;
     public float gravity = -9.8f;
     public float strength = 5f;
@@ -15,6 +17,7 @@ public class player : MonoBehaviour
     {
         InvokeRepeating( "SpriteAnimation", 0.15f, 0.15f);
     }
+
     void SpriteAnimation()
     {
         
@@ -26,6 +29,7 @@ public class player : MonoBehaviour
         count++;
 
     }
+
     void Update()
     {
 
@@ -44,6 +48,16 @@ public class player : MonoBehaviour
 
         direction.y += gravity * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
-
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.CompareTag("Obstacle"))
+        {
+            gameManager.GetComponent<gameManager>().gameOver();
+        }
+        else if(other.gameObject.CompareTag("Scoring"))
+        {
+            gameManager.GetComponent<gameManager>().increaseScore();
+        }
     }
 }
